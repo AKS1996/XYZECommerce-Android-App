@@ -1,0 +1,8 @@
+
+<shape android:shape="rectangle"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <solid
+        android:color="@color/login_page_edit_text_background"/>
+    <corners
+        android:radius="7dp"/>
+</shape>

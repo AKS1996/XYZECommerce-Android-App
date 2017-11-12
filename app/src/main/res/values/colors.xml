@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#383884</color>
+    <color name="white">#FFFFFF</color>
+    <color name="lgrey">#BBBBBB</color>
+    <color name="lblue">#ef6f80d1</color>
+
+    <color name= "login_page_background">#2e3d6c</color>
+    <color name="login_page_edit_text_background">#fff</color>
+    <color name="login_page_button_stroke">#fff</color>
+    <color name="login_page_button_text">#fff</color>
+    <color name="sign_up_link_color">#ffffff</color>
+    <color name="forgot_password_text_color">#ffffff</color>
+
+    <color name="sign_up_page_background">#75809f</color>
+</resources>
