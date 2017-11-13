@@ -49,15 +49,15 @@ public class MapsActivity extends FragmentActivity implements com.google.android
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        int off = 0;
-        try {
-            off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
-        } catch (Settings.SettingNotFoundException e) {
 
-        }
-        if (off == 0) {
-            Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(onGPS);
+        // Checking for GPS Access
+        try {
+            if (Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE) != 0) {
+                Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(onGPS);
+            }
+        } catch (Settings.SettingNotFoundException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

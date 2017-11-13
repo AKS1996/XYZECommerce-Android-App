@@ -5,16 +5,8 @@
     android:gravity="center"
     android:padding="10dp"
     android:focusableInTouchMode="true"
-    android:background="@color/sign_up_page_background"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:id="@+id/login_email_input_layout"
-        android:background="@drawable/login_edit_text_background"
-        android:layout_marginBottom="8dp">
     <EditText
         android:layout_marginTop="8dp"
         android:id="@+id/user_name"
@@ -24,7 +16,6 @@
         android:hint="@string/sign_up_name_hint"
         android:inputType="textPersonName"
          />
-    </android.support.design.widget.TextInputLayout>
     <EditText
         android:layout_marginTop="8dp"
         android:id="@+id/first_name"

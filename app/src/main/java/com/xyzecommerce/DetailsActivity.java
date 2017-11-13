@@ -55,7 +55,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_details);
         TextView slid_dateils=(TextView)findViewById(R.id.slid);
-        slid_dateils.setText("Your ID  "+getSharedPreferences("hello", Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"000"));
+        slid_dateils.setText("Your ID  "+getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"000"));
         mCheckBalance=(Button)findViewById(R.id.check_balance);
         mViewStatement=(Button)findViewById(R.id.view_statement);
         mCheckBalance.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 JSONObject jsonObject=new JSONObject();
                 try {
-                    jsonObject.put("SLID",getSharedPreferences("hello", Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"0000"));
+                    jsonObject.put("SLID",getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"0000"));
 
 
                 } catch (JSONException e) {

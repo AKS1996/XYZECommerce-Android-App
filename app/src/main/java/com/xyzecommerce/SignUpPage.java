@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,6 +27,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import static com.google.android.gms.plus.PlusOneDummyView.TAG;
 
 public class SignUpPage extends AppCompatActivity {
@@ -72,7 +75,6 @@ public class SignUpPage extends AppCompatActivity {
         mInputUserPassword = (EditText) findViewById(R.id.user_password);
         mInputUserConfirmPassword = (EditText) findViewById(R.id.user_confirm_password);
         mCreateAccount = (Button) findViewById(R.id.create_account_button);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
@@ -94,7 +96,7 @@ public class SignUpPage extends AppCompatActivity {
         }
         if (post_dict.length() > 0) {
             new SendJsonDataToServer().execute(String.valueOf(post_dict), "https://xyzecommerce.herokuapp.com/singup.php");
-//            #call to async class
+            savePrefrences();
         }
 
 
@@ -133,123 +135,122 @@ public class SignUpPage extends AppCompatActivity {
 
     public void nextActivity(String s) {
 
-            if(s.contains("sucess")){
-            Intent i=new Intent(this,DetailsActivity.class);
+        if (s.contains("sucess")) {
+            Intent i = new Intent(this, DetailsActivity.class);
             String UserName = mInputUserName.getText().toString().trim();
-            String cell= mInputUserPhoneNumber.getText().toString().trim();
-            SharedPreferences sharedPreferences=getSharedPreferences("hello", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putString(Constants.PROFILE_NAME,UserName);
-            editor.putString(Constants.CELL,cell);
+            String cell = mInputUserPhoneNumber.getText().toString().trim();
+            SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(Constants.PROFILE_NAME, UserName);
+            editor.putString(Constants.CELL, cell);
             editor.apply();
-            i.putExtra(Constants.PROFILE_NAME,UserName);
-            i.putExtra(Constants.CELL,cell);
+            i.putExtra(Constants.PROFILE_NAME, UserName);
+            i.putExtra(Constants.CELL, cell);
             startActivity(i);
-            finish();}else{
-                Toast.makeText(this,"tryagain",Toast.LENGTH_LONG).show();
-            }
-}
-class SendJsonDataToServer extends AsyncTask<String,String,String> {
-    private String url_link;
+            finish();
+        } else {
+            Toast.makeText(this, "Try Again", Toast.LENGTH_LONG).show();
+        }
+    }
 
-    @Override
-    protected String doInBackground(String... params) {
-        String JsonResponse = null;
-        String JsonDATA = params[0];
-        url_link = params[1];
-        OutputStream out = null;
-        HttpURLConnection urlConnection = null;
-        BufferedReader reader = null;
-        try {
-            URL url = new URL(url_link);
+    class SendJsonDataToServer extends AsyncTask<String, String, String> {
+        private String url_link;
 
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setDoOutput(true);
-            urlConnection.setDoInput(true);
-            urlConnection.setRequestProperty("Content-Type", "application/json");
-            urlConnection.setRequestProperty("Accept", "application/json");
-            //urlConnection.addRequestProperty("Content-Type","multipart/form-data");
+        @Override
+        protected String doInBackground(String... params) {
+            String JsonResponse = null;
+            String JsonDATA = params[0];
+            url_link = params[1];
+            OutputStream out = null;
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+            try {
+                URL url = new URL(url_link);
 
-            out = new BufferedOutputStream(urlConnection.getOutputStream());
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setDoOutput(true);
+                urlConnection.setDoInput(true);
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestProperty("Accept", "application/json");
+                //urlConnection.addRequestProperty("Content-Type","multipart/form-data");
 
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-            // List<NameValuePair> paras=new ArrayList<NameValuePair>();
-            //  paras.add(new BasicNameValuePair("SLID","2043761745859427"));
-//            Uri.Builder builder= new Uri.Builder()
-//                    .appendQueryParameter("SLID","2043761745859427");
-//            String query=builder.build().getEncodedQuery();
-            writer.write(JsonDATA);
-            //   Log.i("QUERY",query);
-            Log.i("plus", JsonDATA);
-            // Log.i("plus",query);
-            Log.i("plus", urlConnection.toString());
+                out = new BufferedOutputStream(urlConnection.getOutputStream());
 
-            writer.flush();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+                writer.write(JsonDATA);
+                Log.i("plus", JsonDATA);
+                Log.i("plus", urlConnection.toString());
 
-            writer.close();
+                writer.flush();
 
-            out.close();
+                writer.close();
 
-            urlConnection.connect();
+                out.close();
 
-            InputStream inputStream = urlConnection.getInputStream();
-//input stream
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream == null) {
-                // Nothing to do.
-                Log.i(TAG, JsonResponse + "empty");
-                return null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
+                urlConnection.connect();
 
-            String inputLine;
-            while ((inputLine = reader.readLine()) != null)
-                buffer.append(inputLine);
-            if (buffer.length() == 0) {
-                // Stream was empty. No point in parsing.
-                Log.i(TAG, JsonResponse + "empty");
-                return null;
-            }
-            JsonResponse = buffer.toString();
-//response data
-            Log.i(TAG, JsonResponse);
-            //send to post execute
-            return JsonResponse;
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (final IOException e) {
-                    Log.e(TAG, "Error closing stream", e);
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    Log.i(TAG, JsonResponse + "empty");
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String inputLine;
+                while ((inputLine = reader.readLine()) != null)
+                    buffer.append(inputLine);
+                if (buffer.length() == 0) {
+                    // Stream was empty. No point in parsing.
+                    Log.i(TAG, JsonResponse + "empty");
+                    return null;
+                }
+                JsonResponse = buffer.toString();
+
+                Log.i(TAG, JsonResponse);
+                //send to post execute
+                return JsonResponse;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e(TAG, "Error closing stream", e);
+                    }
                 }
             }
-        }
-        return null;
-    }
-
-
-    @Override
-    protected void onPostExecute(String s) {
-
-        switch (url_link) {
-            case "https://xyzecommerce.herokuapp.com/singup.php":
-                nextActivity(s);
-                break;
-            case "https://xyzecommerce.herokuapp.com/login.php":
-                //  new LoginActivity().next_Intent(s);
-                break;
+            return null;
         }
 
 
+        @Override
+        protected void onPostExecute(String s) {
+
+            switch (url_link) {
+                case "https://xyzecommerce.herokuapp.com/singup.php":
+                    nextActivity(s);
+                    break;
+                case "https://xyzecommerce.herokuapp.com/login.php":
+                    break;
+            }
+
+
+        }
+
+
     }
 
-
-}
+    void savePrefrences(){
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREF,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(Constants.LoggedIn,true);
+        editor.apply();
+    }
 }
 

@@ -4,7 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#383884</color>
     <color name="white">#FFFFFF</color>
-    <color name="lgrey">#BBBBBB</color>
     <color name="lblue">#ef6f80d1</color>
 
     <color name= "login_page_background">#2e3d6c</color>
@@ -14,5 +13,4 @@
     <color name="sign_up_link_color">#ffffff</color>
     <color name="forgot_password_text_color">#ffffff</color>
 
-    <color name="sign_up_page_background">#75809f</color>
 </resources>

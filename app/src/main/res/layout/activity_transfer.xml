@@ -8,24 +8,22 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:maxLength="16"
         android:ems="16"
-        android:hint="Enter ID"
-        android:id="@+id/accountid"/>
+        android:hint="Enter Reciever's SLID"
+        android:id="@+id/AccountIDField"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="16"
         android:inputType="phone"
         android:hint="Amount"
-        android:id="@+id/amount"/>
+        android:id="@+id/AmountField"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send Amount"
         android:layout_marginTop="10dp"
-        android:id="@+id/send_amount"/>
+        android:id="@+id/SendAmountButton"/>
 
 
 </LinearLayout>

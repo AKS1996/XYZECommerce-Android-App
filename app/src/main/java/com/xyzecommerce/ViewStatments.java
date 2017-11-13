@@ -37,7 +37,7 @@ public class ViewStatments extends AppCompatActivity {
         setContentView(R.layout.activity_view_statments);
         JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("SLID",getSharedPreferences("hello", Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"0000"));
+            jsonObject.put("SLID",getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"0000"));
 
 
         } catch (JSONException e) {

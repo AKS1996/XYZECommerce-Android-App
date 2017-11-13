@@ -71,17 +71,14 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
-
                         //TODO: Use the Profile class to get information about the current user.
                         facebookloggedIn=true;
                         profileTracker=new ProfileTracker() {
                             @Override
                             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-//                                intent.putExtra(Constants.PROFILE_NAME,currentProfile.getFirstName());
-//                                intent.putExtra(Constants.PROFILE_ID,currentProfile.getId());
                                 FB_ID=currentProfile.getId();
                                 UserName=currentProfile.getFirstName();
-                                SharedPreferences sharedPreferences=getSharedPreferences("hello", Context.MODE_PRIVATE);
+                                SharedPreferences sharedPreferences=getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor=sharedPreferences.edit();
                                 editor.putString(Constants.PROFILE_ID,FB_ID);
                                 editor.apply();
@@ -89,15 +86,11 @@ public class LoginActivity extends AppCompatActivity {
                                 JSONObject jsonObject=new JSONObject();
                                 try {
                                     jsonObject.put("SLID",currentProfile.getId());
-                                    Log.i("plus",currentProfile.getId());
-
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
-                                if (jsonObject.length() > 0) {
+                                if (jsonObject.length() > 0)
                                     new SendJsonDataToServer1().execute(String.valueOf(jsonObject),"https://xyzecommerce.herokuapp.com/login.php");
-//            #call to async class
-                                }
                                 profileTracker.stopTracking();
 
                             }
@@ -156,8 +149,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(),SignUpPage.class);
-                intent.putExtra(Constants.PROFILE_NAME,mInputEmail.getText()+"");
-                intent.putExtra(Constants.PROFILE_ID,"TEMP-ID");
+                intent.putExtra(Constants.PROFILE_NAME,"");
+                intent.putExtra(Constants.PROFILE_ID,mInputEmail.getText()+"");
                 startActivity(intent);
                 finish();
             }
@@ -189,7 +182,6 @@ public class LoginActivity extends AppCompatActivity {
             valid = false;
         } else if (password.isEmpty() || password.length() < 4 ) {
             mInputLayoutPassword.setError("between 4 and 10 alphanumeric characters");
-            // mInputPassword.requestFocus();
             valid = false;
             mInputLayoutEmail.setErrorEnabled(false);
         } else {
@@ -231,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
                 String name=jsonObject.getString("UNAME");
                 String cell=jsonObject.getString("CELL");
                 Intent intent=new Intent(this,DetailsActivity.class);
-                SharedPreferences sharedPreferences=getSharedPreferences("hello", Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences=getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.putString(Constants.PROFILE_NAME,name);
                 editor.putString(Constants.CELL,cell);
@@ -239,7 +231,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } catch (Exception e) {
-              //  Toast.makeText(this,"jsonerror",Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }
@@ -270,23 +261,10 @@ public class LoginActivity extends AppCompatActivity {
                 out = new BufferedOutputStream(urlConnection.getOutputStream());
 
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                // List<NameValuePair> paras=new ArrayList<NameValuePair>();
-                //  paras.add(new BasicNameValuePair("SLID","2043761745859427"));
-//            Uri.Builder builder= new Uri.Builder()
-//                    .appendQueryParameter("SLID","2043761745859427");
-//            String query=builder.build().getEncodedQuery();
                 writer.write(JsonDATA);
-                //   Log.i("QUERY",query);
-                Log.i("plus", JsonDATA);
-                // Log.i("plus",query);
-                Log.i("plus", urlConnection.toString());
-
                 writer.flush();
-
                 writer.close();
-
                 out.close();
-
                 urlConnection.connect();
 
                 InputStream inputStream = urlConnection.getInputStream();
@@ -303,14 +281,9 @@ public class LoginActivity extends AppCompatActivity {
                 while ((inputLine = reader.readLine()) != null)
                     buffer.append(inputLine + "\n");
                 if (buffer.length() == 0) {
-                    // Stream was empty. No point in parsing.
-                   // Log.i(TAG, JsonResponse + "empty");
                     return "null";
                 }
                 JsonResponse = buffer.toString();
-//response data
-               // Log.i(TAG, JsonResponse);
-                //send to post execute
                 return JsonResponse;
             } catch (IOException e) {
                 e.printStackTrace();
