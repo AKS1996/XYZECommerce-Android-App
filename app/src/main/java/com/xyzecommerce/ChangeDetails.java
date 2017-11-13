@@ -1,7 +1,6 @@
 package com.xyzecommerce;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -40,16 +39,16 @@ public class ChangeDetails extends AppCompatActivity {
         setContentView(R.layout.activity_change_details);
 //        Intent dataintent=getIntent();
 //        data=dataintent.getExtras();
-//        Toast.makeText(this,data.getString(Constants.PROFILE_NAME),Toast.LENGTH_LONG).show();
-//        Toast.makeText(this,data.getString(Constants.CELL),Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,data.getString(Utils.PROFILE_NAME),Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,data.getString(Utils.CELL),Toast.LENGTH_LONG).show();
 
         saveButton=(Button)findViewById(R.id.save_button);
         mUserName=(EditText)findViewById(R.id.change_username_text);
         mPhoneNumber=(EditText)findViewById(R.id.change_phonenumber_text);
-//        mUserName.setText(data.getString(Constants.PROFILE_NAME));
-//        mPhoneNumber.setText(data.getString(Constants.CELL));
-        mPhoneNumber.setText(getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.CELL,"0000"));
-        mUserName.setText(getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.PROFILE_NAME,"0000"));
+//        mUserName.setText(data.getString(Utils.PROFILE_NAME));
+//        mPhoneNumber.setText(data.getString(Utils.CELL));
+        mPhoneNumber.setText(getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE).getString(Utils.CELL,"0000"));
+        mUserName.setText(getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE).getString(Utils.PROFILE_NAME,"0000"));
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +71,7 @@ public class ChangeDetails extends AppCompatActivity {
             try {
                 post_dict.put("UNAME" , mUserName.getText().toString().trim());
                 post_dict.put("CELL", mPhoneNumber.getText().toString().trim());
-                post_dict.put("SLID",getSharedPreferences(Constants.SHARED_PREF,Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"o00"));
+                post_dict.put("SLID",getSharedPreferences(Utils.SHARED_PREF,Context.MODE_PRIVATE).getString(Utils.PROFILE_ID,"o00"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -177,10 +176,10 @@ public class ChangeDetails extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (s.contains("sucess") ) {
-                SharedPreferences sharedPreferences=getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences=getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putString(Constants.PROFILE_NAME,mUserName.getText().toString().trim());
-                editor.putString(Constants.CELL,mPhoneNumber.getText().toString().trim());
+                editor.putString(Utils.PROFILE_NAME,mUserName.getText().toString().trim());
+                editor.putString(Utils.CELL,mPhoneNumber.getText().toString().trim());
                 editor.apply();
 
             }else {

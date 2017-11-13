@@ -5,6 +5,7 @@
     <color name="colorAccent">#383884</color>
     <color name="white">#FFFFFF</color>
     <color name="lblue">#ef6f80d1</color>
+    <color name="black">#000000</color>
 
     <color name= "login_page_background">#2e3d6c</color>
     <color name="login_page_edit_text_background">#fff</color>

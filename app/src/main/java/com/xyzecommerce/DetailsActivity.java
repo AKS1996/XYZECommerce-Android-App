@@ -55,7 +55,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_details);
         TextView slid_dateils=(TextView)findViewById(R.id.slid);
-        slid_dateils.setText("Your ID  "+getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"000"));
+        slid_dateils.setText("Your ID  "+getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE).getString(Utils.PROFILE_ID,"000"));
         mCheckBalance=(Button)findViewById(R.id.check_balance);
         mViewStatement=(Button)findViewById(R.id.view_statement);
         mCheckBalance.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 JSONObject jsonObject=new JSONObject();
                 try {
-                    jsonObject.put("SLID",getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"0000"));
+                    jsonObject.put("SLID",getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE).getString(Utils.PROFILE_ID,"0000"));
 
 
                 } catch (JSONException e) {
@@ -192,11 +192,11 @@ public class DetailsActivity extends AppCompatActivity {
         }else if(id==R.id.action_change_details){
 
             Intent changeDetailsIntent=new Intent(this,ChangeDetails.class);
-//            changeDetailsIntent.putExtra(Constants.PROFILE_NAME,dataIntentExtras.getString(Constants.PROFILE_NAME));
-//            changeDetailsIntent.putExtra(Constants.CELL,dataIntentExtras.getString(Constants.CELL));
+//            changeDetailsIntent.putExtra(Utils.PROFILE_NAME,dataIntentExtras.getString(Utils.PROFILE_NAME));
+//            changeDetailsIntent.putExtra(Utils.CELL,dataIntentExtras.getString(Utils.CELL));
 //
-//            Toast.makeText(this,dataIntentExtras.getString(Constants.CELL),Toast.LENGTH_LONG).show();
-//            Toast.makeText(this,dataIntentExtras.getString(Constants.PROFILE_NAME),Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,dataIntentExtras.getString(Utils.CELL),Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,dataIntentExtras.getString(Utils.PROFILE_NAME),Toast.LENGTH_LONG).show();
             startActivity(changeDetailsIntent);
 
         }

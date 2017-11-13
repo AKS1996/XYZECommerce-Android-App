@@ -34,7 +34,7 @@ class TransferActivity : AppCompatActivity() {
                 try {
                     postDict.put("AMOUNT", AmountField.text.toString().trim { it <= ' ' })
                     postDict.put("TO_SLID", AccountIDField.text.toString().trim { it <= ' ' })
-                    postDict.put("FROM_SLID", getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.PROFILE_ID, "o00"))
+                    postDict.put("FROM_SLID", getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE).getString(Utils.PROFILE_ID, "o00"))
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
