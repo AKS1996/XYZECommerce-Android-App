@@ -85,6 +85,8 @@ public class DetailsActivity extends AppCompatActivity {
         mTransferMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 Intent i=new Intent(getBaseContext(),TransferActivity.class);
                 startActivity(i);
             }
