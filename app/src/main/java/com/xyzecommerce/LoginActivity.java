@@ -2,14 +2,11 @@ package com.xyzecommerce;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.design.widget.TextInputLayout;
-import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,23 +63,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!Utils.isOnline(LoginActivity.this))
-            new AlertDialog.Builder(LoginActivity.this)
-                    .setTitle("This App Needs Internet")
-                    .setMessage("Do you want to switch on Internet?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-                        }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-
-            }).show();
-
         FacebookSdk.sdkInitialize(getApplicationContext());
         mFacebookCallbackManager = CallbackManager.Factory.create();
         // This MUST be placed after the above two lines.
@@ -104,9 +84,9 @@ public class LoginActivity extends AppCompatActivity {
                             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                                 FB_ID=currentProfile.getId();
                                 UserName=currentProfile.getFirstName();
-                                SharedPreferences sharedPreferences=getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE);
+                                SharedPreferences sharedPreferences=getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor=sharedPreferences.edit();
-                                editor.putString(Utils.PROFILE_ID,FB_ID);
+                                editor.putString(Constants.PROFILE_ID,FB_ID);
                                 editor.apply();
 
 //                                JSONObject jsonObject=new JSONObject();
@@ -210,8 +190,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(),SignUpPage.class);
-                intent.putExtra(Utils.PROFILE_NAME,"");
-                intent.putExtra(Utils.PROFILE_ID,mInputEmail.getText()+"");
+                intent.putExtra(Constants.PROFILE_NAME,"");
+                intent.putExtra(Constants.PROFILE_ID,mInputEmail.getText()+"");
                 startActivity(intent);
                 finish();
             }
@@ -265,7 +245,7 @@ public class LoginActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Utils.IS_USER_lOGGEDIN=true;
+                Constants.IS_USER_lOGGEDIN=true;
                 progressDialog.dismiss();
             }
         },3000);
@@ -274,8 +254,8 @@ public class LoginActivity extends AppCompatActivity {
     public void next_Intent(String s){
         if(s.equals("null")){
             Intent intent=new Intent(this,SignUpPage.class);
-            intent.putExtra(Utils.PROFILE_NAME,UserName);
-            intent.putExtra(Utils.PROFILE_ID,FB_ID);
+            intent.putExtra(Constants.PROFILE_NAME,UserName);
+            intent.putExtra(Constants.PROFILE_ID,FB_ID);
             startActivity(intent);
             finish();
         }else{
@@ -284,10 +264,10 @@ public class LoginActivity extends AppCompatActivity {
                 String name=jsonObject.getString("UNAME");
                 String cell=jsonObject.getString("CELL");
                 Intent intent=new Intent(this,DetailsActivity.class);
-                SharedPreferences sharedPreferences=getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences=getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putString(Utils.PROFILE_NAME,name);
-                editor.putString(Utils.CELL,cell);
+                editor.putString(Constants.PROFILE_NAME,name);
+                editor.putString(Constants.CELL,cell);
                 editor.apply();
                 startActivity(intent);
                 finish();
