@@ -24,6 +24,8 @@ import android.Manifest;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,6 +87,8 @@ public class DetailsActivity extends AppCompatActivity {
         mTransferMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 Intent i=new Intent(getBaseContext(),TransferActivity.class);
                 startActivity(i);
             }
@@ -180,8 +184,8 @@ public class DetailsActivity extends AppCompatActivity {
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-//                            LoginManager.getInstance().logOut();
-//                            LoginActivity..facebookloggedIn=false;
+                            LoginManager.getInstance().logOut();
+                            LoginActivity.facebookloggedIn=false;
                             finish();
                         }
 

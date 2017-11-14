@@ -70,7 +70,7 @@ public class SignUpPage extends AppCompatActivity {
         mInputUserName = (EditText) findViewById(R.id.user_name);
         mInputFirstName = (EditText) findViewById(R.id.first_name);
         mInputUserName.setText(Username);
-        Toast.makeText(this, Username, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, Username, Toast.LENGTH_SHORT).show();
         mInputUserPhoneNumber = (EditText) findViewById(R.id.user_phone_number);
         mInputUserPassword = (EditText) findViewById(R.id.user_password);
         mInputUserConfirmPassword = (EditText) findViewById(R.id.user_confirm_password);
