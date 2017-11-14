@@ -41,6 +41,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Callable;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager mFacebookCallbackManager;
@@ -83,14 +89,15 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString(Constants.PROFILE_ID,FB_ID);
                                 editor.apply();
 
-                                JSONObject jsonObject=new JSONObject();
-                                try {
-                                    jsonObject.put("SLID",currentProfile.getId());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                if (jsonObject.length() > 0)
-                                    new SendJsonDataToServer1().execute(String.valueOf(jsonObject),"https://xyzecommerce.herokuapp.com/login.php");
+//                                JSONObject jsonObject=new JSONObject();
+//                                try {
+//                                    jsonObject.put("SLID",currentProfile.getId());
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                if (jsonObject.length() > 0)
+//                                    new SendJsonDataToServer1().execute(String.valueOf(jsonObject),"https://xyzecommerce.herokuapp.com/login.php");
+                                isUserExists(currentProfile.getId());
                                 profileTracker.stopTracking();
 
                             }
@@ -137,6 +144,40 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void isUserExists(String id) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://xyzecommerce.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RegisterApi service = retrofit.create(RegisterApi.class);
+        UserExistsResponseModel slid=new UserExistsResponseModel(id);
+
+        Call<UserExistsResponseModel> userExistsResponseModelCall=service.insertUser(slid);
+        userExistsResponseModelCall.enqueue(new Callback<UserExistsResponseModel>() {
+            @Override
+            public void onResponse(Call<UserExistsResponseModel> call, Response<UserExistsResponseModel> response) {
+                Toast.makeText(getBaseContext(),response.body().getmUsername()+"ffgfg",Toast.LENGTH_LONG).show();
+                Log.e("fvfv","fgfgfgfgfg");
+            }
+
+            @Override
+            public void onFailure(Call<UserExistsResponseModel> call, Throwable t) {
+                Toast.makeText(getBaseContext(),t.toString(),Toast.LENGTH_LONG).show();
+                Log.e("TAG", t.toString());
+                Intent intent=new Intent(getBaseContext(),SignUpPage.class);
+                intent.putExtra(Constants.PROFILE_NAME,UserName);
+                intent.putExtra(Constants.PROFILE_ID,FB_ID);
+                startActivity(intent);
+                finish();
+
+
+            }
+        });
+
+
+    }
 
 
     private void setAllView() {
@@ -236,84 +277,84 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
-    class SendJsonDataToServer1 extends AsyncTask<String,String,String> {
-        private String url_link;
-
-        @Override
-        protected String doInBackground(String... params) {
-            String JsonResponse = null;
-            String JsonDATA = params[0];
-            url_link = params[1];
-            OutputStream out = null;
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-            try {
-                URL url = new URL(url_link);
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoOutput(true);
-                urlConnection.setDoInput(true);
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.setRequestProperty("Accept", "application/json");
-                //urlConnection.addRequestProperty("Content-Type","multipart/form-data");
-
-                out = new BufferedOutputStream(urlConnection.getOutputStream());
-
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                writer.write(JsonDATA);
-                writer.flush();
-                writer.close();
-                out.close();
-                urlConnection.connect();
-
-                InputStream inputStream = urlConnection.getInputStream();
-//input stream
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    //Log.i(TAG, JsonResponse + "empty");
-                    return "null";
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String inputLine;
-                while ((inputLine = reader.readLine()) != null)
-                    buffer.append(inputLine + "\n");
-                if (buffer.length() == 0) {
-                    return "null";
-                }
-                JsonResponse = buffer.toString();
-                return JsonResponse;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        //Log.e(TAG, "Error closing stream", e);
-                    }
-                }
-            }
-            return null;
-        }
-
-
-        @Override
-        protected void onPostExecute(String s) {
-
-            switch (url_link) {
-                case "https://xyzecommerce.herokuapp.com/singup.php":
-
-                    break;
-                case "https://xyzecommerce.herokuapp.com/login.php":
-                    next_Intent(s);
-                    break;
-            }
-        }
-    }
+//    class SendJsonDataToServer1 extends AsyncTask<String,String,String> {
+//        private String url_link;
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            String JsonResponse = null;
+//            String JsonDATA = params[0];
+//            url_link = params[1];
+//            OutputStream out = null;
+//            HttpURLConnection urlConnection = null;
+//            BufferedReader reader = null;
+//            try {
+//                URL url = new URL(url_link);
+//
+//                urlConnection = (HttpURLConnection) url.openConnection();
+//                urlConnection.setRequestMethod("POST");
+//                urlConnection.setDoOutput(true);
+//                urlConnection.setDoInput(true);
+//                urlConnection.setRequestProperty("Content-Type", "application/json");
+//                urlConnection.setRequestProperty("Accept", "application/json");
+//                //urlConnection.addRequestProperty("Content-Type","multipart/form-data");
+//
+//                out = new BufferedOutputStream(urlConnection.getOutputStream());
+//
+//                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+//                writer.write(JsonDATA);
+//                writer.flush();
+//                writer.close();
+//                out.close();
+//                urlConnection.connect();
+//
+//                InputStream inputStream = urlConnection.getInputStream();
+////input stream
+//                StringBuffer buffer = new StringBuffer();
+//                if (inputStream == null) {
+//                    // Nothing to do.
+//                    //Log.i(TAG, JsonResponse + "empty");
+//                    return "null";
+//                }
+//                reader = new BufferedReader(new InputStreamReader(inputStream));
+//
+//                String inputLine;
+//                while ((inputLine = reader.readLine()) != null)
+//                    buffer.append(inputLine + "\n");
+//                if (buffer.length() == 0) {
+//                    return "null";
+//                }
+//                JsonResponse = buffer.toString();
+//                return JsonResponse;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } finally {
+//                if (urlConnection != null) {
+//                    urlConnection.disconnect();
+//                }
+//                if (reader != null) {
+//                    try {
+//                        reader.close();
+//                    } catch (final IOException e) {
+//                        //Log.e(TAG, "Error closing stream", e);
+//                    }
+//                }
+//            }
+//            return null;
+//        }
+//
+//
+//        @Override
+//        protected void onPostExecute(String s) {
+//
+//            switch (url_link) {
+//                case "https://xyzecommerce.herokuapp.com/singup.php":
+//
+//                    break;
+//                case "https://xyzecommerce.herokuapp.com/login.php":
+//                    next_Intent(s);
+//                    break;
+//            }
+//        }
+//    }
 }

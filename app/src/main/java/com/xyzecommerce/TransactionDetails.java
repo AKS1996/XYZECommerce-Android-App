@@ -1,18 +1,25 @@
 package com.xyzecommerce;
 
+import com.google.gson.annotations.SerializedName;
+
 public class TransactionDetails {
+    @SerializedName("AMOUNT")
     private   int money;
-    private String Id;
+    @SerializedName("FROM")
+    private String FromId;
+
+    @SerializedName("TO")
+    private String ToId;
     public TransactionDetails(int amount,String id){
         money=amount;
-        Id=id;
+        FromId=id;
     }
 
     public void setfId(String ImageId){
-        Id=ImageId;
+        FromId=ImageId;
     }
     public String getfId(){
-        return Id;
+        return FromId;
     }
     public void setAmount(int Amount){
         money=Amount;
