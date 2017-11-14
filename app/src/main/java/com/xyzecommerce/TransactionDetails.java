@@ -10,7 +10,8 @@ public class TransactionDetails {
 
     @SerializedName("TO")
     private String ToId;
-    public TransactionDetails(int amount,String id){
+
+    TransactionDetails(int amount,String id){
         money=amount;
         FromId=id;
     }
@@ -18,13 +19,13 @@ public class TransactionDetails {
     public void setfId(String ImageId){
         FromId=ImageId;
     }
-    public String getfId(){
+    String getfId(){
         return FromId;
     }
     public void setAmount(int Amount){
         money=Amount;
     }
-    public int getMoney(){
+    int getMoney(){
         return money;
     }
 } 

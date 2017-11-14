@@ -43,9 +43,9 @@ public class SignUpPage extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up_page);
 
         Intent intent = getIntent();
-        Fb_id = intent.getStringExtra(Constants.PROFILE_ID);
+        Fb_id = intent.getStringExtra(Utils.PROFILE_ID);
         Log.i("plus", Fb_id);
-        Username = intent.getStringExtra(Constants.PROFILE_NAME);
+        Username = intent.getStringExtra(Utils.PROFILE_NAME);
         setAllViews();
         setAllStringValues();
         mCreateAccount.setOnClickListener(new View.OnClickListener() {
@@ -67,14 +67,13 @@ public class SignUpPage extends AppCompatActivity {
 
     private void setAllViews() {
 
-        mInputUserName = (EditText) findViewById(R.id.user_name);
-        mInputFirstName = (EditText) findViewById(R.id.first_name);
+        mInputUserName = findViewById(R.id.user_name);
+        mInputFirstName = findViewById(R.id.first_name);
         mInputUserName.setText(Username);
-//        Toast.makeText(this, Username, Toast.LENGTH_SHORT).show();
-        mInputUserPhoneNumber = (EditText) findViewById(R.id.user_phone_number);
-        mInputUserPassword = (EditText) findViewById(R.id.user_password);
-        mInputUserConfirmPassword = (EditText) findViewById(R.id.user_confirm_password);
-        mCreateAccount = (Button) findViewById(R.id.create_account_button);
+        mInputUserPhoneNumber = findViewById(R.id.user_phone_number);
+        mInputUserPassword = findViewById(R.id.user_password);
+        mInputUserConfirmPassword = findViewById(R.id.user_confirm_password);
+        mCreateAccount = findViewById(R.id.create_account_button);
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
@@ -139,13 +138,13 @@ public class SignUpPage extends AppCompatActivity {
             Intent i = new Intent(this, DetailsActivity.class);
             String UserName = mInputUserName.getText().toString().trim();
             String cell = mInputUserPhoneNumber.getText().toString().trim();
-            SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(Constants.PROFILE_NAME, UserName);
-            editor.putString(Constants.CELL, cell);
+            editor.putString(Utils.PROFILE_NAME, UserName);
+            editor.putString(Utils.CELL, cell);
             editor.apply();
-            i.putExtra(Constants.PROFILE_NAME, UserName);
-            i.putExtra(Constants.CELL, cell);
+            i.putExtra(Utils.PROFILE_NAME, UserName);
+            i.putExtra(Utils.CELL, cell);
             startActivity(i);
             finish();
         } else {
@@ -246,10 +245,10 @@ public class SignUpPage extends AppCompatActivity {
 
     }
 
-    void savePrefrences(){
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREF,Context.MODE_PRIVATE);
+    void savePrefrences() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(Constants.LoggedIn,true);
+        editor.putBoolean(Utils.LoggedIn, true);
         editor.apply();
     }
 }

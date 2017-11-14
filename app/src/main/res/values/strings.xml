@@ -35,10 +35,6 @@
 
     <!-- Drawer Toggle -->
     <string name="title_activity_maps">Map</string>
-    <string name="open_drawer_fallback">Open Drawer</string>
-    <string name="close_drawer_fallback">Close Drawer</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!--Strings for SignUP Page-->
     <string name="sign_up_name_hint">"UserName"</string>

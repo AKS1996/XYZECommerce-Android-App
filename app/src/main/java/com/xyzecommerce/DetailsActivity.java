@@ -43,61 +43,60 @@ import java.net.URL;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private Button mTransferMoney,mViewStatement,mCheckBalance;
+    private Button mTransferMoney, mViewStatement, mCheckBalance;
     private ImageButton mCallButton;
     private EditText mPhonenumber;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
     Bundle dataIntentExtras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent dataIntent =getIntent();
-        dataIntentExtras=dataIntent.getExtras();
+        Intent dataIntent = getIntent();
+        dataIntentExtras = dataIntent.getExtras();
 
         setContentView(R.layout.activity_details);
-        TextView slid_dateils=(TextView)findViewById(R.id.slid);
-        slid_dateils.setText("Your ID  "+getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"000"));
-        mCheckBalance=(Button)findViewById(R.id.check_balance);
-        mViewStatement=(Button)findViewById(R.id.view_statement);
+        TextView slid_dateils = findViewById(R.id.slid);
+        slid_dateils.setText("Your ID  " + getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE).getString(Utils.PROFILE_ID, "000"));
+        mCheckBalance = findViewById(R.id.check_balance);
+        mViewStatement = findViewById(R.id.view_statement);
         mCheckBalance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONObject jsonObject=new JSONObject();
+                JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("SLID",getSharedPreferences(Constants.SHARED_PREF, Context.MODE_PRIVATE).getString(Constants.PROFILE_ID,"0000"));
+                    jsonObject.put("SLID", getSharedPreferences(Utils.SHARED_PREF, Context.MODE_PRIVATE).getString(Utils.PROFILE_ID, "0000"));
 
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 if (jsonObject.length() > 0) {
-                    new SendJsonDataToServer().execute(String.valueOf(jsonObject),"https://xyzecommerce.herokuapp.com/viewstatement.php");
+                    new SendJsonDataToServer().execute(String.valueOf(jsonObject), "https://xyzecommerce.herokuapp.com/viewstatement.php");
                 }
             }
         });
         mViewStatement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(getBaseContext(),ViewStatments.class);
+                Intent i = new Intent(getBaseContext(), ViewStatments.class);
                 startActivity(i);
             }
         });
-        mTransferMoney=(Button)findViewById(R.id.transfer_balance);
+        mTransferMoney = findViewById(R.id.transfer_balance);
         mTransferMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                Intent i=new Intent(getBaseContext(),TransferActivity.class);
+                Intent i = new Intent(getBaseContext(), TransferActivity.class);
                 startActivity(i);
             }
         });
-        mCallButton=(ImageButton)findViewById(R.id.callButton);
+        mCallButton = findViewById(R.id.callButton);
         mCallButton.setEnabled(false);
-        mPhonenumber=(EditText)findViewById(R.id.call_phone_number);
+        mPhonenumber = findViewById(R.id.call_phone_number);
 
-        mPhonenumber.addTextChangedListener(new TextWatcher(){
+        mPhonenumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -105,15 +104,13 @@ public class DetailsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().trim().length()==10)
-                {
+                if (s.toString().trim().length() == 10) {
                     mCallButton.setEnabled(true);
-                }
-                else
-                {
+                } else {
                     mCallButton.setEnabled(false);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -150,42 +147,32 @@ public class DetailsActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission was granted.
                 } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(this,"Permissions Needed",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Permissions Needed", Toast.LENGTH_LONG).show();
                 }
                 return;
-                }
             }
         }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu;
-        // this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.details_activity_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("Logging Out")
                     .setMessage("Are you sure you want to Logout?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                    {
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             LoginManager.getInstance().logOut();
-                            LoginActivity.facebookloggedIn=false;
+                            LoginActivity.facebookloggedIn = false;
                             finish();
                         }
 
@@ -193,21 +180,22 @@ public class DetailsActivity extends AppCompatActivity {
                     .setNegativeButton("No", null)
                     .show();
             return true;
-        }else if(id==R.id.action_change_details){
+        } else if (id == R.id.action_change_details) {
 
-            Intent changeDetailsIntent=new Intent(this,ChangeDetails.class);
-//            changeDetailsIntent.putExtra(Constants.PROFILE_NAME,dataIntentExtras.getString(Constants.PROFILE_NAME));
-//            changeDetailsIntent.putExtra(Constants.CELL,dataIntentExtras.getString(Constants.CELL));
+            Intent changeDetailsIntent = new Intent(this, ChangeDetails.class);
+//            changeDetailsIntent.putExtra(Utils.PROFILE_NAME,dataIntentExtras.getString(Utils.PROFILE_NAME));
+//            changeDetailsIntent.putExtra(Utils.CELL,dataIntentExtras.getString(Utils.CELL));
 //
-//            Toast.makeText(this,dataIntentExtras.getString(Constants.CELL),Toast.LENGTH_LONG).show();
-//            Toast.makeText(this,dataIntentExtras.getString(Constants.PROFILE_NAME),Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,dataIntentExtras.getString(Utils.CELL),Toast.LENGTH_LONG).show();
+//            Toast.makeText(this,dataIntentExtras.getString(Utils.PROFILE_NAME),Toast.LENGTH_LONG).show();
             startActivity(changeDetailsIntent);
 
         }
 
         return super.onOptionsItemSelected(item);
     }
-    class SendJsonDataToServer extends AsyncTask<String,String,String> {
+
+    class SendJsonDataToServer extends AsyncTask<String, String, String> {
         private String url_link;
 
         @Override
@@ -227,22 +215,11 @@ public class DetailsActivity extends AppCompatActivity {
                 urlConnection.setDoInput(true);
                 urlConnection.setRequestProperty("Content-Type", "application/json");
                 urlConnection.setRequestProperty("Accept", "application/json");
-                //urlConnection.addRequestProperty("Content-Type","multipart/form-data");
 
                 out = new BufferedOutputStream(urlConnection.getOutputStream());
 
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
-                // List<NameValuePair> paras=new ArrayList<NameValuePair>();
-                //  paras.add(new BasicNameValuePair("SLID","2043761745859427"));
-//            Uri.Builder builder= new Uri.Builder()
-//                    .appendQueryParameter("SLID","2043761745859427");
-//            String query=builder.build().getEncodedQuery();
                 writer.write(JsonDATA);
-                //   Log.i("QUERY",query);
-                Log.i("plus", JsonDATA);
-                // Log.i("plus",query);
-                Log.i("plus", urlConnection.toString());
-
                 writer.flush();
 
                 writer.close();
@@ -294,36 +271,36 @@ public class DetailsActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            Log.i("plus",s);
-            int gross=200;
+            Log.i("plus", s);
+            int gross = 200;
 
             try {
-                JSONObject jsonObject=new JSONObject(s);
-                JSONArray jsonArray=jsonObject.getJSONArray("SENTMONEY");
+                JSONObject jsonObject = new JSONObject(s);
+                JSONArray jsonArray = jsonObject.getJSONArray("SENTMONEY");
 
-                for(int i=0;i<jsonArray.length();i++){
-                    gross-=jsonArray.getJSONObject(i).getInt("AMOUNT");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    gross -= jsonArray.getJSONObject(i).getInt("AMOUNT");
                 }
 
             } catch (JSONException e) {
-                Toast.makeText(getBaseContext(),"err",Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "err", Toast.LENGTH_LONG).show();
 
             }
             try {
-                JSONObject jsonObject2=new JSONObject(s);
-                JSONArray jsonArray=jsonObject2.getJSONArray("RECEIVEDMONEY");
+                JSONObject jsonObject2 = new JSONObject(s);
+                JSONArray jsonArray = jsonObject2.getJSONArray("RECEIVEDMONEY");
 
-                for(int i=0;i<jsonArray.length();i++){
-                    gross-=jsonArray.getJSONObject(i).getInt("AMOUNT");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    gross -= jsonArray.getJSONObject(i).getInt("AMOUNT");
                 }
 
             } catch (JSONException e) {
 
             }
-            Toast.makeText(getBaseContext(),"BAL "+gross,Toast.LENGTH_LONG).show();
-        }
-
+            Toast.makeText(getBaseContext(), "BAL " + gross, Toast.LENGTH_LONG).show();
         }
 
     }
+
+}
 
